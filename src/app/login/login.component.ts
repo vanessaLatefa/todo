@@ -28,8 +28,12 @@ export class LoginComponent implements OnInit {
   onSubmit(){
     console.log('Logging in ..')
 
+    if (this.loginForm.valid){
+      this.authService.setLoggedin(true);
+    }
+
     this.authService.login().subscribe(result => {
-      this.router.navigate(['login/todo-overview']);
+    this.router.navigate(['home/login/todo-overview']);
     })
   }
 
