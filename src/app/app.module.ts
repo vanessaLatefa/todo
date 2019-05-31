@@ -8,7 +8,12 @@ import { TodoListComponent } from './todo-list/todo-list.component';
 import { TodoOverviewComponent } from './todo-overview/todo-overview.component';
 import { NgRedux, NgReduxModule} from '@angular-redux/store';
 import {IAppState, rootReducer, INITIAL_STATE} from './store';
-import {FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+
+import { AlertComponent } from './_components/alert/alert.component';
+import { RegisterComponent } from './register/register.component';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { JwtInterceptor, ErrorInterceptor, fakeBackendProvider } from './_helpers';
 
 @NgModule({
   declarations: [
@@ -16,20 +21,28 @@ import {FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
     LoginComponent,
     HomeComponent,
     TodoListComponent,
-    TodoOverviewComponent
+    TodoOverviewComponent,
+    AlertComponent,
+    RegisterComponent,
+    
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgReduxModule,
     FormsModule,
-   
     ReactiveFormsModule,
+    HttpClientModule,
     
 
 
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi:true},
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi:true},
+
+    fakeBackendProvider
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { 
